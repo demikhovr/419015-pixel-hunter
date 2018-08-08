@@ -1,6 +1,6 @@
 'use strict';
 
-const KeyCodes = {
+const KeyCode = {
   LEFT_ARROW: 37,
   RIGHT_ARROW: 39
 };
