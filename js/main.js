@@ -67,10 +67,10 @@ const selectScreen = (currentIndex) => {
 
 const switchScreenHandler = (evt) => {
   switch (evt.keyCode) {
-    case KeyCodes.LEFT_ARROW:
+    case KeyCode.LEFT_ARROW:
       selectScreen(currentScreenIndex - 1);
       break;
-    case KeyCodes.RIGHT_ARROW:
+    case KeyCode.RIGHT_ARROW:
       selectScreen(currentScreenIndex + 1);
       break;
   }
