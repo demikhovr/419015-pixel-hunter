@@ -1,6 +1,6 @@
 'use strict';
 
-const keyCodes = {
+const KeyCodes = {
   LEFT_ARROW: 37,
   RIGHT_ARROW: 39
 };
@@ -15,9 +15,31 @@ const SCREENS = [
   `stats`
 ];
 
+const controlsTemplate = `
+  <div class="arrows__wrap">
+    <style>
+      .arrows__wrap {
+        position: absolute;
+        top: 95px;
+        left: 50%;
+        margin-left: -56px;
+      }
+      
+      .arrows__btn {
+        background: none;
+        border: 2px solid black;
+        padding: 5px 20px;
+      }
+    </style>
+    <button class="arrows__btn"><-</button>
+    <button class="arrows__btn">-></button>
+  </div>`;
+
+document.body.insertAdjacentHTML(`beforeend`, controlsTemplate);
+
 const mainScreen = document.querySelector(`#main`);
-const arrowBtns = document.querySelectorAll(`.arrows__btn`);
 let currentScreenIndex = 0;
+const arrowBtns = document.querySelectorAll(`.arrows__btn`);
 
 const screens = SCREENS.map((screen) => document.querySelector(`#${screen}`).content);
 
@@ -45,10 +67,10 @@ const selectScreen = (currentIndex) => {
 
 const switchScreenHandler = (evt) => {
   switch (evt.keyCode) {
-    case keyCodes.LEFT_ARROW:
+    case KeyCodes.LEFT_ARROW:
       selectScreen(currentScreenIndex - 1);
       break;
-    case keyCodes.RIGHT_ARROW:
+    case KeyCodes.RIGHT_ARROW:
       selectScreen(currentScreenIndex + 1);
       break;
   }
@@ -56,17 +78,12 @@ const switchScreenHandler = (evt) => {
 
 document.addEventListener(`keydown`, switchScreenHandler);
 
-arrowBtns.forEach((btn, i) => {
-  btn.addEventListener(`click`, () => {
-    switch (i) {
-      case 0:
-        selectScreen(currentScreenIndex - 1);
-        break;
-      case 1:
-        selectScreen(currentScreenIndex + 1);
-        break;
-    }
-  });
+arrowBtns[0].addEventListener(`click`, () => {
+  selectScreen(currentScreenIndex - 1);
+});
+
+arrowBtns[1].addEventListener(`click`, () => {
+  selectScreen(currentScreenIndex + 1);
 });
 
 renderScreen(screens[currentScreenIndex]);
