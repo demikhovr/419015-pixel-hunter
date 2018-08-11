@@ -1,4 +1,5 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import rules from './rules';
 
 const template = `
   <section class="greeting central--blur">
@@ -23,5 +24,11 @@ const template = `
   </section>`;
 
 const greeting = createElement(template);
+
+const showRulesBtn = greeting.querySelector(`.greeting__continue`);
+
+const showRulesBtnClickHandler = () => renderScreen(rules);
+
+showRulesBtn.addEventListener(`click`, showRulesBtnClickHandler);
 
 export default greeting;

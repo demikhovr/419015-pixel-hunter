@@ -1,4 +1,6 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import stats from './stats';
+import greeting from './greeting';
 
 const template = `
   <header class="header">
@@ -46,5 +48,17 @@ const template = `
   </section>`;
 
 const gameThree = createElement(template);
+
+const gameForm = gameThree.querySelector(`.game__content`);
+const backBtn = gameThree.querySelector(`.back`);
+
+const gameFormClickHandler = ({target}) => {
+  if (target.closest(`.game__option`)) {
+    renderScreen(stats);
+  }
+};
+
+gameForm.addEventListener(`click`, gameFormClickHandler);
+backBtn.addEventListener(`click`, () => renderScreen(greeting));
 
 export default gameThree;

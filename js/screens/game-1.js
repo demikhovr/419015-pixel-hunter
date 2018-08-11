@@ -1,4 +1,6 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import gameTwo from './game-2';
+import greeting from './greeting';
 
 const template = `
   <header class="header">
@@ -59,5 +61,21 @@ const template = `
   </section>`;
 
 const gameOne = createElement(template);
+
+const gameForm = gameOne.querySelector(`.game__content`);
+const gameAnswers = gameOne.querySelectorAll(`.game__answer input[type="radio"]`);
+const backBtn = gameOne.querySelector(`.back`);
+const AMOUNT_OF_QUESTIONS = 2;
+
+const gameFormChangeHandler = () => {
+  const areAllAnswered = [...gameAnswers].filter(({checked}) => checked).length === AMOUNT_OF_QUESTIONS;
+
+  if (areAllAnswered) {
+    renderScreen(gameTwo);
+  }
+};
+
+gameForm.addEventListener(`change`, gameFormChangeHandler);
+backBtn.addEventListener(`click`, () => renderScreen(greeting));
 
 export default gameOne;

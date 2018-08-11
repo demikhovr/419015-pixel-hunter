@@ -1,4 +1,6 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import gameOne from './game-1';
+import greeting from './greeting';
 
 const template = `
   <header class="header">
@@ -30,5 +32,26 @@ const template = `
   </section>`;
 
 const rules = createElement(template);
+
+const rulesForm = rules.querySelector(`.rules__form`);
+const rulesNameInput = rules.querySelector(`.rules__input`);
+const rulesFormSubmitBtn = rules.querySelector(`.rules__button`);
+const backBtn = rules.querySelector(`.back`);
+
+rulesFormSubmitBtn.disabled = true;
+
+const rulesNameInputHandler = ({target}) => {
+  rulesFormSubmitBtn.disabled = !target.value.length;
+};
+
+const rulesFormSubmitHandler = (evt) => {
+  evt.preventDefault();
+
+  renderScreen(gameOne);
+};
+
+rulesNameInput.addEventListener(`input`, rulesNameInputHandler);
+rulesForm.addEventListener(`submit`, rulesFormSubmitHandler);
+backBtn.addEventListener(`click`, () => renderScreen(greeting));
 
 export default rules;

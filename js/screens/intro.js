@@ -1,4 +1,5 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import greeting from './greeting';
 
 const template = `
   <section class="intro">
@@ -7,5 +8,11 @@ const template = `
   </section>`;
 
 const intro = createElement(template);
+
+const playGameBtn = intro.querySelector(`.intro__asterisk`);
+
+const playGameBtnClickHandler = () => renderScreen(greeting);
+
+playGameBtn.addEventListener(`click`, playGameBtnClickHandler);
 
 export default intro;

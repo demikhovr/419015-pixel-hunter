@@ -1,4 +1,5 @@
-import {createElement} from './../util';
+import {createElement, renderScreen} from './../util';
+import greeting from './greeting';
 
 const template = `
   <header class="header">
@@ -114,5 +115,9 @@ const template = `
   </section>`;
 
 const stats = createElement(template);
+
+const backBtn = stats.querySelector(`.back`);
+
+backBtn.addEventListener(`click`, () => renderScreen(greeting));
 
 export default stats;
