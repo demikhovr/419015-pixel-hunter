@@ -1,5 +1,3 @@
-'use strict';
-
 const KeyCode = {
   LEFT_ARROW: 37,
   RIGHT_ARROW: 39
