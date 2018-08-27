@@ -7,7 +7,7 @@ const MIN_TIME = 10;
 const MAX_TIME = 20;
 
 export const countPoints = (answers, lives) => {
-  if (!(answers instanceof Array)) {
+  if (!Array.isArray(answers)) {
     throw new Error(`answers should be of type array`);
   }
 
@@ -19,21 +19,21 @@ export const countPoints = (answers, lives) => {
     throw new Error(`lives should be of type number`);
   }
 
-  let points = 0;
+  let points = answers.reduce((prev, curr) => {
+    if (curr.isCorrect) {
+      prev += ANSWER_POINT;
 
-  answers.forEach(({isCorrect, time}) => {
-    if (isCorrect) {
-      points += ANSWER_POINT;
-
-      if (time < MIN_TIME) {
-        points += EXTRA_POINT;
+      if (curr.time < MIN_TIME) {
+        prev += EXTRA_POINT;
       }
 
-      if (time > MAX_TIME) {
-        points -= EXTRA_POINT;
+      if (curr.time > MAX_TIME) {
+        prev -= EXTRA_POINT;
       }
     }
-  });
+
+    return prev;
+  }, 0);
 
   points += lives * EXTRA_POINT;
 

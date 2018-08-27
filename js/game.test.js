@@ -1,6 +1,11 @@
 import {assert} from 'chai';
 import {INITIAL_STATE} from './data/data';
-import {countPoints, updateLives, changeLevel, updateTime} from './game';
+import {
+  countPoints,
+  updateLives,
+  changeLevel,
+  updateTime
+} from './game';
 
 describe(`Check score counting`, () => {
   it(`should return 1650 if there are full lives and all answers are correct and answered fast`, () => {
