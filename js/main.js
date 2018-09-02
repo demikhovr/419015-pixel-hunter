@@ -1,4 +1,4 @@
 import {renderScreen} from './util';
-import intro from './screens/intro';
+import intro from './modules/screens/intro';
 
-renderScreen(intro);
+renderScreen(intro());
