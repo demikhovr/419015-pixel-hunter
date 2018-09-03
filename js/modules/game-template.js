@@ -9,14 +9,14 @@ export default (state) => {
   const gameLevel = levels[gameState.level];
   let gameContent = ``;
 
-  switch (true) {
-    case (gameLevel.type === `common`):
+  switch (gameLevel.type) {
+    case (`common`):
       gameContent = getGameCommonContent(gameLevel);
       break;
-    case (gameLevel.type === `wide`):
+    case (`wide`):
       gameContent = getGameWideContent(gameLevel);
       break;
-    case (gameLevel.type === `triple`):
+    case (`triple`):
       gameContent = getGameTripleContent(gameLevel);
       break;
   }

@@ -7,7 +7,7 @@ import {levels} from './../../data/data';
 import * as game from './../../game';
 
 const getGameScreen = (state) => {
-  let gameState = Object.assign({}, state);
+  let gameState = Object.assign({}, state, {answers: [...state.answers]});
   const gameLevel = levels[gameState.level];
 
   const template = `
