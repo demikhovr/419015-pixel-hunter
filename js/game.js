@@ -1,10 +1,10 @@
 import {INITIAL_STATE} from "./data/data";
 
-const MAX_QUESTIONS = 10;
+export const MAX_QUESTIONS = 10;
 const ANSWER_POINT = 100;
 const EXTRA_POINT = 50;
-const MIN_TIME = 10;
-const MAX_TIME = 20;
+export const MIN_TIME = 10;
+export const MAX_TIME = 20;
 
 export const countPoints = (answers, lives) => {
   if (!Array.isArray(answers)) {
@@ -77,3 +77,12 @@ export const updateTime = (state) => {
 
   return Object.assign({}, state, {time});
 };
+
+export const getUpdatedState = (state, newLevel, isCorrectAnswer) => {
+  let updatedState = state;
+  updatedState = changeLevel(updatedState, newLevel);
+  updatedState = updateLives(updatedState, isCorrectAnswer);
+  updatedState = updateTime(updatedState);
+  return updatedState;
+};
+
