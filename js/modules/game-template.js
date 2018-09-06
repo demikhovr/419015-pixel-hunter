@@ -10,13 +10,13 @@ export default (state) => {
   let gameContent = ``;
 
   switch (gameLevel.type) {
-    case (`common`):
+    case `common`:
       gameContent = getGameCommonContent(gameLevel);
       break;
-    case (`wide`):
+    case `wide`:
       gameContent = getGameWideContent(gameLevel);
       break;
-    case (`triple`):
+    case `triple`:
       gameContent = getGameTripleContent(gameLevel);
       break;
   }
