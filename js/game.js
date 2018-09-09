@@ -1,5 +1,4 @@
 import {INITIAL_STATE} from "./data/data";
-
 export const MAX_QUESTIONS = 10;
 const ANSWER_POINT = 100;
 const EXTRA_POINT = 50;
@@ -78,10 +77,11 @@ export const updateTime = (state) => {
   return Object.assign({}, state, {time});
 };
 
-export const getUpdatedState = (state, newLevel, isCorrectAnswer) => {
+export const getUpdatedState = (state, newLevel, answer) => {
   let updatedState = state;
+  const {isCorrect} = answer;
   updatedState = changeLevel(updatedState, newLevel);
-  updatedState = updateLives(updatedState, isCorrectAnswer);
+  updatedState = updateLives(updatedState, isCorrect);
   updatedState = updateTime(updatedState);
   return updatedState;
 };
