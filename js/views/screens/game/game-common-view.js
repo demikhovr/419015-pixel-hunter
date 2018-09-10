@@ -43,10 +43,10 @@ export default class GameCommonView extends AbstractView {
     const gameAnswers = form.querySelectorAll(`.game__answer input[type="radio"]`);
 
     const formChangeHandler = () => {
-      const areAllAnswered = [...gameAnswers].filter(({checked}) => checked).length === MAX_ANSWERS;
+      const areAllAnswered = Array.from(gameAnswers).filter(({checked}) => checked).length === MAX_ANSWERS;
 
       if (areAllAnswered) {
-        const isCorrect = [...gameAnswers].filter((answer) => answer.checked && answer.dataset.isCorrect === `true`).length === MAX_ANSWERS;
+        const isCorrect = Array.from(gameAnswers).filter((answer) => answer.checked && answer.dataset.isCorrect === `true`).length === MAX_ANSWERS;
         const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
