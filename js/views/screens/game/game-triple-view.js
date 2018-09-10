@@ -2,6 +2,12 @@ import AbstractView from './../../abstract-view';
 import getGameStats from './game-stats-template';
 import resize from './../../../utils/resize';
 
+const FRAME = {
+  width: 304,
+  height: 455
+};
+const TIME = 15;
+
 export default class GameTripleView extends AbstractView {
   constructor(level, answers) {
     super();
@@ -10,11 +16,6 @@ export default class GameTripleView extends AbstractView {
   }
 
   get template() {
-    const FRAME = {
-      width: 304,
-      height: 455
-    };
-
     return `
       <section class="game">
         <p class="game__task">${this.level.task}</p>
@@ -37,8 +38,7 @@ export default class GameTripleView extends AbstractView {
 
       if (option) {
         const isCorrect = option.dataset.isCorrect === `true`;
-        const time = 15;
-        const answer = {isCorrect, time};
+        const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
     };

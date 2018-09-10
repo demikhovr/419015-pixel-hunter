@@ -2,6 +2,13 @@ import AbstractView from './../../abstract-view';
 import getGameStats from './game-stats-template';
 import resize from './../../../utils/resize';
 
+const FRAME = {
+  width: 468,
+  height: 458
+};
+const MAX_ANSWERS = 2;
+const TIME = 15;
+
 export default class GameCommonView extends AbstractView {
   constructor(level, answers) {
     super();
@@ -10,11 +17,6 @@ export default class GameCommonView extends AbstractView {
   }
 
   get template() {
-    const FRAME = {
-      width: 468,
-      height: 458
-    };
-
     return `
       <section class="game">
         <p class="game__task">${this.level.task}</p>
@@ -38,8 +40,6 @@ export default class GameCommonView extends AbstractView {
 
   bind(element) {
     const form = element.querySelector(`.game__content`);
-
-    const MAX_ANSWERS = 2;
     const gameAnswers = form.querySelectorAll(`.game__answer input[type="radio"]`);
 
     const formChangeHandler = () => {
@@ -47,8 +47,7 @@ export default class GameCommonView extends AbstractView {
 
       if (areAllAnswered) {
         const isCorrect = [...gameAnswers].filter((answer) => answer.checked && answer.dataset.isCorrect === `true`).length === MAX_ANSWERS;
-        const time = 15;
-        const answer = {isCorrect, time};
+        const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
     };
