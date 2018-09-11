@@ -1,6 +1,6 @@
-import * as game from './../game';
+import * as game from '../../../game';
 
-export default ({answers}) => {
+export default (answers) => {
   const statsResultTypes = {
     correct: `<li class="stats__result stats__result--correct"></li>`,
     wrong: `<li class="stats__result stats__result--wrong"></li>`,
