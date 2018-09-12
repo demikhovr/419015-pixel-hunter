@@ -4,7 +4,7 @@ import {
   countPoints,
   updateLives,
   changeLevel,
-  updateTime
+  tick
 } from './game';
 
 describe(`Check score counting`, () => {
@@ -301,16 +301,16 @@ describe(`Check score counting`, () => {
 
 describe(`Check update lives`, () => {
   it(`should update lives`, () => {
-    assert.equal(updateLives(INITIAL_STATE, true).lives, 3);
-    assert.equal(updateLives(INITIAL_STATE, false).lives, 2);
+    assert.equal(updateLives(INITIAL_STATE, {isCorrect: true}).lives, 3);
+    assert.equal(updateLives(INITIAL_STATE, {isCorrect: false}).lives, 2);
   });
 
   it(`should return 0 if 0 lives left and answer is correct`, () => {
-    assert.equal(updateLives(Object.assign({}, INITIAL_STATE, {lives: 0}), true).lives, 0);
+    assert.equal(updateLives(Object.assign({}, INITIAL_STATE, {lives: 0}), {isCorrect: true}).lives, 0);
   });
 
   it(`should return -1 if 0 lives left and answer is incorrect`, () => {
-    assert.equal(updateLives(Object.assign({}, INITIAL_STATE, {lives: 0}), false).lives, -1);
+    assert.equal(updateLives(Object.assign({}, INITIAL_STATE, {lives: 0}), {isCorrect: false}).lives, -1);
   });
 });
 
@@ -339,10 +339,10 @@ describe(`Check level changer`, () => {
 
 describe(`Check update time`, () => {
   it(`should return 29 seconds if 30 is passed`, () => {
-    assert.equal(updateTime(Object.assign({}, INITIAL_STATE, {time: 30})).time, 29);
+    assert.equal(tick(Object.assign({}, INITIAL_STATE, {time: 30})).time, 29);
   });
 
   it(`should return false if time is over`, () => {
-    assert.equal(updateTime(Object.assign({}, INITIAL_STATE, {time: 0}).time), 0);
+    assert.equal(tick(Object.assign({}, INITIAL_STATE, {time: 0}).time), 0);
   });
 });

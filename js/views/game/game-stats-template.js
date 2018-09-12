@@ -1,4 +1,4 @@
-import * as game from '../../../game';
+import * as game from '../../game';
 
 export default (answers) => {
   const statsResultTypes = {
