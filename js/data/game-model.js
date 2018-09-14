@@ -1,5 +1,5 @@
-import {INITIAL_STATE} from './../data/data';
-import * as game from './../game';
+import {INITIAL_STATE} from '../data/data';
+import * as game from '../game';
 
 export default class GameModel {
   constructor() {

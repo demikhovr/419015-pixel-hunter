@@ -1,7 +1,7 @@
-import AbstractView from './../abstract-view';
-import HeaderView from './../header-view';
-import {INITIAL_STATE} from './../../data/data';
-import {MAX_QUESTIONS} from './../../game';
+import AbstractView from '../abstract-view';
+import HeaderView from '../header-view';
+import {INITIAL_STATE} from '../../data/data';
+import {MAX_QUESTIONS} from '../../game';
 
 export default class RulesView extends AbstractView {
   constructor() {
