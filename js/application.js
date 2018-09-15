@@ -13,15 +13,17 @@ let levelData = null;
 export default class Application {
   static showIntro() {
     const intro = new IntroScreen();
-    intro.onPlayGameBtnClick = () => Application.showGreeting();
+    intro.onFadeOut = () => Application.showGreeting();
+    intro.onPlayGameBtnClick = () => intro.hide();
+
     renderScreen(intro.element);
     Loader.loadData()
       .then((data) => {
         levelData = data;
-        return data;
       })
-      .then(() => Application.showGreeting())
+      .then(() => intro.hide())
       .catch(Application.showModalError);
+
   }
 
   static showGreeting() {
@@ -41,14 +43,22 @@ export default class Application {
     const model = new GameModel(data, playerName);
     const game = new GamePresenter(model);
     game.onBackBtnClick = () => Application.showGreeting();
-    game.onEndGame = (state) => Application.showStats(state);
+    game.onEndGame = (state, player) => {
+      Loader.saveResults(state.answers, state.lives, player)
+        .then(() => Application.showStats(player))
+        .catch(Application.showModalError);
+    };
     renderScreen(game.element);
   }
 
-  static showStats(state) {
-    const stats = new StatsScreen(state);
-    stats.onBackBtnClick = () => Application.showGreeting();
-    renderScreen(stats.element);
+  static showStats(playerName) {
+    Loader.loadResults(playerName)
+      .then((data) => {
+        const stats = new StatsScreen(data);
+        stats.onBackBtnClick = () => Application.showGreeting();
+        renderScreen(stats.element);
+      })
+      .catch(Application.showModalError);
   }
 
   static showModalError(error) {

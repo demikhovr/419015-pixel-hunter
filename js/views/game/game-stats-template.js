@@ -1,31 +1,30 @@
 import * as game from '../../game';
 
-export default (answers) => {
-  const statsResultTypes = {
-    correct: `<li class="stats__result stats__result--correct"></li>`,
-    wrong: `<li class="stats__result stats__result--wrong"></li>`,
-    fast: `<li class="stats__result stats__result--fast"></li>`,
-    slow: `<li class="stats__result stats__result--slow"></li>`,
-    unknown: `<li class="stats__result stats__result--unknown"></li>`,
-  };
+const StatsResultTemplates = {
+  CORRECT: `<li class="stats__result stats__result--correct"></li>`,
+  WRONG: `<li class="stats__result stats__result--wrong"></li>`,
+  FAST: `<li class="stats__result stats__result--fast"></li>`,
+  SLOW: `<li class="stats__result stats__result--slow"></li>`,
+  UNKNOWN: `<li class="stats__result stats__result--unknown"></li>`,
+};
 
-  const getResultTemplate = ({isCorrect, time}) => {
+export default (answers) => {
+  const getResultTemplate = (answer) => {
     let template = ``;
 
-    if (isCorrect) {
-      switch (true) {
-        case (time <= game.MIN_TIME):
-          template = statsResultTypes.fast;
-          break;
-        case (time > game.MAX_TIME):
-          template = statsResultTypes.slow;
-          break;
-        default:
-          template = statsResultTypes.correct;
-          break;
-      }
-    } else {
-      template = statsResultTypes.wrong;
+    switch (answer) {
+      case (game.AnswerType.FAST):
+        template = StatsResultTemplates.FAST;
+        break;
+      case (game.AnswerType.SLOW):
+        template = StatsResultTemplates.SLOW;
+        break;
+      case (game.AnswerType.CORRECT):
+        template = StatsResultTemplates.CORRECT;
+        break;
+      default:
+        template = StatsResultTemplates.WRONG;
+        break;
     }
 
     return template;
@@ -33,7 +32,7 @@ export default (answers) => {
 
   return `
     <ul class="stats">
-      ${Array.from({length: game.MAX_QUESTIONS}, (value, key) => answers[key] ? getResultTemplate(answers[key]) : statsResultTypes.unknown).join(``)}
+      ${Array.from({length: game.MAX_QUESTIONS}, (value, key) => answers[key] !== undefined ? getResultTemplate(answers[key]) : StatsResultTemplates.UNKNOWN).join(``)}
     </ul>
   `;
 };

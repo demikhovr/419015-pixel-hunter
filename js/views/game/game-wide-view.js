@@ -6,7 +6,6 @@ const FRAME = {
   width: 705,
   height: 455
 };
-const TIME = 15;
 
 export default class GameWideView extends AbstractView {
   constructor(level, answers) {
@@ -44,8 +43,7 @@ export default class GameWideView extends AbstractView {
 
       if (checkedAnswer) {
         const isCorrect = checkedAnswer && target.value === this.level.options[0].type;
-        const answer = {isCorrect, TIME};
-        this.onAnswer(answer);
+        this.onAnswer(isCorrect);
       }
     };
 

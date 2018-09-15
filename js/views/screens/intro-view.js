@@ -13,9 +13,25 @@ export default class IntroView extends AbstractView {
       </section>`;
   }
 
+  hide() {
+    this._element.classList.add(`intro--fade-out`);
+  }
+
   bind(element) {
     const playGameBtn = element.querySelector(`.intro__asterisk`);
+
+    const introTransitionEndHandler = (evt) => {
+      if (evt.propertyName === `opacity`) {
+        this.onFadeOut();
+      }
+    };
+
+    element.addEventListener(`transitionend`, introTransitionEndHandler);
     playGameBtn.addEventListener(`click`, this.onPlayGameBtnClick);
+  }
+
+  onFadeOut() {
+
   }
 
   onPlayGameBtnClick() {

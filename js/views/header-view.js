@@ -30,8 +30,13 @@ export default class HeaderView extends AbstractView {
       </header>`;
   }
 
+  toggleBlinkMode(isBlink) {
+    this._timer.classList[isBlink ? `add` : `remove`](`game__timer--blink`);
+  }
+
   bind(element) {
     const backBtn = element.querySelector(`.back`);
+    this._timer = element.querySelector(`.game__timer`);
     backBtn.addEventListener(`click`, this.onBackBtnClick);
   }
 

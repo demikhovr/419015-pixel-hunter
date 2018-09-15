@@ -2,9 +2,10 @@ import {INITIAL_STATE} from '../data/data';
 import * as game from '../game';
 
 export default class GameModel {
-  constructor(data) {
+  constructor(data, playerName) {
     this.restart();
     this.data = data;
+    this.playerName = playerName;
   }
 
   get state() {
