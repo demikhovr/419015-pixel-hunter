@@ -1,9 +1,11 @@
-import {INITIAL_STATE} from "./data/data";
+import {INITIAL_STATE, levels} from "./data/data";
 export const MAX_QUESTIONS = 10;
 const ANSWER_POINT = 100;
 const EXTRA_POINT = 50;
 export const MIN_TIME = 10;
 export const MAX_TIME = 20;
+
+export const getLevel = (level) => levels[level];
 
 export const countPoints = (answers, lives) => {
   if (!Array.isArray(answers)) {
@@ -39,10 +41,10 @@ export const countPoints = (answers, lives) => {
   return points;
 };
 
-export const updateLives = (state, isCorrectAnswer) => {
+export const updateLives = (state, {isCorrect}) => {
   let {lives} = state;
 
-  if (!isCorrectAnswer) {
+  if (!isCorrect) {
     lives--;
   }
 
@@ -65,24 +67,12 @@ export const changeLevel = (state, level) => {
   return Object.assign({}, state, {level});
 };
 
-export const updateTime = (state) => {
-  let {time} = state;
-
-  time--;
-
-  if (!time) {
-    return false;
+export const tick = (state) => {
+  if (!state.time) {
+    return state;
   }
 
-  return Object.assign({}, state, {time});
+  return Object.assign({}, state, {time: state.time - 1});
 };
 
-export const getUpdatedState = (state, newLevel, answer) => {
-  let updatedState = state;
-  const {isCorrect} = answer;
-  updatedState = changeLevel(updatedState, newLevel);
-  updatedState = updateLives(updatedState, isCorrect);
-  updatedState = updateTime(updatedState);
-  return updatedState;
-};
-
+export const addAnswer = (state, {isCorrect, time}) => Object.assign({}, state, {answers: [...state.answers, {isCorrect, time}]});

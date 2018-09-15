@@ -1,6 +1,6 @@
-import AbstractView from './../../abstract-view';
+import AbstractView from '../abstract-view';
 import getGameStats from './game-stats-template';
-import resize from './../../../utils/resize';
+import resize from '../../utils/resize';
 
 const FRAME = {
   width: 705,
