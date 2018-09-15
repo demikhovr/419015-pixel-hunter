@@ -1,11 +1,9 @@
-import {INITIAL_STATE, levels} from "./data/data";
+import {INITIAL_STATE} from "./data/data";
 export const MAX_QUESTIONS = 10;
 const ANSWER_POINT = 100;
 const EXTRA_POINT = 50;
 export const MIN_TIME = 10;
 export const MAX_TIME = 20;
-
-export const getLevel = (level) => levels[level];
 
 export const countPoints = (answers, lives) => {
   if (!Array.isArray(answers)) {

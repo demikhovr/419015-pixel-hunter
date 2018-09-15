@@ -21,7 +21,7 @@ export default class GameTripleView extends AbstractView {
         <p class="game__task">${this.level.task}</p>
         <form class="game__content  game__content--triple">
           ${this.level.options.map((option, i) => `
-            <div class="game__option" data-is-correct="${option.isCorrect}">
+            <div class="game__option">
               <img src="${option.src}" alt="Option ${i + 1}" width="${resize(FRAME, option).width}" height="${resize(FRAME, option).height}">
             </div>
           `).join(``)}
@@ -30,20 +30,34 @@ export default class GameTripleView extends AbstractView {
       </section>`;
   }
 
-  bind(element) {
-    const form = element.querySelector(`.game__content`);
+  _getUniqueAnswerIndex(answers) {
+    const counts = {};
+    const types = answers.map((answer) => answer.type);
 
-    const formClickHandler = ({target}) => {
+    types.forEach((type) => {
+      counts[type] = (counts[type] || 0) + 1;
+    });
+
+    const result = types.filter((type) => counts[type] <= 1)[0];
+    return types.indexOf(result);
+  }
+
+  bind(element) {
+    const gameOptions = element.querySelectorAll(`.game__option`);
+
+    const optionClickHandler = ({target}) => {
       const option = target.closest(`.game__option`);
+      const optionIndex = Array.from(gameOptions).indexOf(option);
 
       if (option) {
-        const isCorrect = option.dataset.isCorrect === `true`;
+        const answerIndex = this._getUniqueAnswerIndex(this.level.options);
+        const isCorrect = answerIndex === optionIndex;
         const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
     };
 
-    form.addEventListener(`click`, formClickHandler);
+    gameOptions.forEach((option) => option.addEventListener(`click`, optionClickHandler));
   }
 
   onAnswer() {

@@ -2,8 +2,9 @@ import {INITIAL_STATE} from '../data/data';
 import * as game from '../game';
 
 export default class GameModel {
-  constructor() {
+  constructor(data) {
     this.restart();
+    this.data = data;
   }
 
   get state() {
@@ -11,7 +12,7 @@ export default class GameModel {
   }
 
   get currentLevel() {
-    return game.getLevel(this._state.level);
+    return this.data[this._state.level];
   }
 
   restart() {

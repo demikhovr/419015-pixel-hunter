@@ -25,11 +25,11 @@ export default class GameCommonView extends AbstractView {
             <div class="game__option">
               <img src="${option.src}" alt="Option ${i + 1}" width="${resize(FRAME, option).width}" height="${resize(FRAME, option).height}">
               <label class="game__answer game__answer--photo">
-                <input class="visually-hidden" name="question${i + 1}" type="radio" value="photo" data-is-correct="${option.answers[0]}">
+                <input class="visually-hidden" name="question${i + 1}" type="radio" value="photo">
                 <span>Фото</span>
               </label>
               <label class="game__answer game__answer--paint">
-                <input class="visually-hidden" name="question${i + 1}" type="radio" value="paint" data-is-correct="${option.answers[1]}">
+                <input class="visually-hidden" name="question${i + 1}" type="radio" value="paint">
                 <span>Рисунок</span>
               </label>
             </div>`).join(``)}
@@ -43,10 +43,18 @@ export default class GameCommonView extends AbstractView {
     const gameAnswers = form.querySelectorAll(`.game__answer input[type="radio"]`);
 
     const formChangeHandler = () => {
-      const areAllAnswered = Array.from(gameAnswers).filter(({checked}) => checked).length === MAX_ANSWERS;
+      const checkedAnswers = Array.from(gameAnswers).filter(({checked}) => checked);
+      const areAllAnswered = checkedAnswers.length === MAX_ANSWERS;
 
       if (areAllAnswered) {
-        const isCorrect = Array.from(gameAnswers).filter((answer) => answer.checked && answer.dataset.isCorrect === `true`).length === MAX_ANSWERS;
+        const isCorrect = checkedAnswers
+          .reduce((prev, curr, i) => {
+            if (curr.value === this.level.options[i].type) {
+              prev++;
+            }
+            return prev;
+          }, 0) === MAX_ANSWERS;
+
         const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
