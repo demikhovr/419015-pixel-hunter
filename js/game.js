@@ -1,45 +1,35 @@
 import {INITIAL_STATE} from "./data/data";
 export const MAX_QUESTIONS = 10;
-const ANSWER_POINT = 100;
-const EXTRA_POINT = 50;
-export const MIN_TIME = 10;
-export const MAX_TIME = 20;
+export const ANSWER_POINT = 50;
 
-export const countPoints = (answers, lives) => {
-  if (!Array.isArray(answers)) {
-    throw new Error(`answers should be of type array`);
-  }
-
-  if (answers.length < MAX_QUESTIONS || answers.length > MAX_QUESTIONS) {
-    throw new Error(`There should be only 10 answers`);
-  }
-
-  if (typeof lives !== `number`) {
-    throw new Error(`lives should be of type number`);
-  }
-
-  let points = answers.reduce((prev, curr) => {
-    if (curr.isCorrect) {
-      prev += ANSWER_POINT;
-
-      if (curr.time < MIN_TIME) {
-        prev += EXTRA_POINT;
-      }
-
-      if (curr.time > MAX_TIME) {
-        prev -= EXTRA_POINT;
-      }
-    }
-
-    return prev;
-  }, 0);
-
-  points += lives * EXTRA_POINT;
-
-  return points;
+export const AnswerType = {
+  WRONG: 0,
+  SLOW: 1,
+  CORRECT: 2,
+  FAST: 3
 };
 
-export const updateLives = (state, {isCorrect}) => {
+export const AnswerTime = {
+  MIN: 10,
+  MAX: 20
+};
+
+export const AnswerTypeMultiplier = {
+  WRONG: 0,
+  SLOW: 1,
+  CORRECT: 2,
+  FAST: 3
+};
+
+export const countPoints = (answers, lives) => {
+  if (lives < 0) {
+    return 0;
+  }
+
+  return (answers.reduce((prev, item) => prev + item) + lives) * ANSWER_POINT;
+};
+
+export const updateLives = (state, isCorrect) => {
   let {lives} = state;
 
   if (!isCorrect) {
@@ -73,4 +63,24 @@ export const tick = (state) => {
   return Object.assign({}, state, {time: state.time - 1});
 };
 
-export const addAnswer = (state, {isCorrect, time}) => Object.assign({}, state, {answers: [...state.answers, {isCorrect, time}]});
+export const getAnswerType = (time) => {
+  if (time <= AnswerTime.MIN) {
+    return AnswerType.FAST;
+  }
+
+  if (time > AnswerTime.MAX) {
+    return AnswerType.SLOW;
+  }
+
+  if (AnswerTime.MIN < time && time < AnswerTime.MAX) {
+    return AnswerType.CORRECT;
+  }
+
+  return AnswerType.WRONG;
+};
+
+export const addAnswer = (state, isCorrect) => {
+  const time = INITIAL_STATE.time - state.time;
+  const answer = !isCorrect ? AnswerType.WRONG : getAnswerType(time);
+  return Object.assign({}, state, {answers: [...state.answers, answer]});
+};

@@ -3,6 +3,7 @@ import GameCommonView from './views/game/game-common-view';
 import GameWideView from './views/game/game-wide-view';
 import GameTripleView from './views/game/game-triple-view';
 const ONE_SECOND = 1000;
+const BLINK_TIME = 5;
 
 export default class GamePresenter {
   constructor(model) {
@@ -26,7 +27,7 @@ export default class GamePresenter {
 
   get gameLevel() {
     if (!this.model.currentLevel || this.model.isDead()) {
-      this.onEndGame(this.model.state);
+      this.onEndGame(this.model.state, this.model.playerName);
       return false;
     }
 
@@ -58,6 +59,9 @@ export default class GamePresenter {
     header.onBackBtnClick = () => this.onBackBtnClick();
     this.root.replaceChild(header.element, this._header.element);
     this._header = header;
+    if (this.model.state.time <= BLINK_TIME) {
+      this._header.toggleBlinkMode(true);
+    }
   }
 
   updateGame() {
@@ -82,12 +86,13 @@ export default class GamePresenter {
 
   stopTimer() {
     clearInterval(this._interval);
+    this._header.toggleBlinkMode(false);
     this.model.resetTimer();
   }
 
   _onAnswer(answer) {
-    this.stopTimer();
     this.model.onAnswer(answer);
+    this.stopTimer();
     this.updateHeader();
     this.updateGame();
   }

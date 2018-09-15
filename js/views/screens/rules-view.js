@@ -50,20 +50,15 @@ export default class RulesView extends AbstractView {
 
     const nameInputHandler = ({target}) => {
       submitBtn.disabled = !target.value.length;
-      this.onNameInput();
     };
 
     const formSubmitHandler = (evt) => {
       evt.preventDefault();
-      this.onFormSubmit();
+      this.onFormSubmit(nameInput.value);
     };
 
     nameInput.addEventListener(`input`, nameInputHandler);
     form.addEventListener(`submit`, formSubmitHandler);
-  }
-
-  onNameInput() {
-
   }
 
   onFormSubmit() {

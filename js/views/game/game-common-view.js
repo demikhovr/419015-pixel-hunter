@@ -7,7 +7,6 @@ const FRAME = {
   height: 458
 };
 const MAX_ANSWERS = 2;
-const TIME = 15;
 
 export default class GameCommonView extends AbstractView {
   constructor(level, answers) {
@@ -55,8 +54,7 @@ export default class GameCommonView extends AbstractView {
             return prev;
           }, 0) === MAX_ANSWERS;
 
-        const answer = {isCorrect, TIME};
-        this.onAnswer(answer);
+        this.onAnswer(isCorrect);
       }
     };
 

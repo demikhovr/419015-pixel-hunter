@@ -6,7 +6,6 @@ const FRAME = {
   width: 304,
   height: 455
 };
-const TIME = 15;
 
 export default class GameTripleView extends AbstractView {
   constructor(level, answers) {
@@ -52,8 +51,7 @@ export default class GameTripleView extends AbstractView {
       if (option) {
         const answerIndex = this._getUniqueAnswerIndex(this.level.options);
         const isCorrect = answerIndex === optionIndex;
-        const answer = {isCorrect, TIME};
-        this.onAnswer(answer);
+        this.onAnswer(isCorrect);
       }
     };
 
