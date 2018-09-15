@@ -10,8 +10,6 @@ import Loader from './data/loader';
 
 let levelData = null;
 
-
-
 export default class Application {
   static showIntro() {
     const intro = new IntroScreen();
