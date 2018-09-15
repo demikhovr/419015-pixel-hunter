@@ -1,16 +1,27 @@
-import {renderScreen} from './utils/util';
+import {mainScreen, renderScreen} from './utils/util';
 import IntroScreen from './views/screens/intro-view';
 import GreetingScreen from './views/screens/greeting-view';
 import RulesScreen from './views/screens/rules-view';
 import GameModel from './data/game-model';
 import GamePresenter from './game-presenter';
 import StatsScreen from './views/screens/stats-view';
+import ModalError from './views/modal-error-view';
+import Loader from './data/loader';
+
+let levelData = null;
 
 export default class Application {
   static showIntro() {
     const intro = new IntroScreen();
     intro.onPlayGameBtnClick = () => Application.showGreeting();
     renderScreen(intro.element);
+    Loader.loadData()
+      .then((data) => {
+        levelData = data;
+        return data;
+      })
+      .then(() => Application.showGreeting())
+      .catch(Application.showModalError);
   }
 
   static showGreeting() {
@@ -21,12 +32,13 @@ export default class Application {
 
   static showRules() {
     const rules = new RulesScreen();
-    rules.onFormSubmit = (playerName) => Application.showGame(playerName);
+    rules.onBackBtnClick = () => Application.showGreeting();
+    rules.onFormSubmit = (playerName) => Application.showGame(levelData, playerName);
     renderScreen(rules.element);
   }
 
-  static showGame(playerName) {
-    const model = new GameModel(playerName);
+  static showGame(data, playerName) {
+    const model = new GameModel(data, playerName);
     const game = new GamePresenter(model);
     game.onBackBtnClick = () => Application.showGreeting();
     game.onEndGame = (state) => Application.showStats(state);
@@ -37,5 +49,10 @@ export default class Application {
     const stats = new StatsScreen(state);
     stats.onBackBtnClick = () => Application.showGreeting();
     renderScreen(stats.element);
+  }
+
+  static showModalError(error) {
+    const modalError = new ModalError(error);
+    mainScreen.appendChild(modalError.element);
   }
 }

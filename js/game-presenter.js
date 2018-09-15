@@ -2,7 +2,6 @@ import HeaderView from './views/header-view';
 import GameCommonView from './views/game/game-common-view';
 import GameWideView from './views/game/game-wide-view';
 import GameTripleView from './views/game/game-triple-view';
-import {levels} from './data/data';
 const ONE_SECOND = 1000;
 
 export default class GamePresenter {
@@ -31,15 +30,15 @@ export default class GamePresenter {
       return false;
     }
 
-    switch (levels[this.model.state.level].type) {
+    switch (this.model.data[this.model.state.level].type) {
       case `common`:
-        this.game = new GameCommonView(levels[this.model.state.level], this.model.state.answers);
+        this.game = new GameCommonView(this.model.data[this.model.state.level], this.model.state.answers);
         break;
       case `wide`:
-        this.game = new GameWideView(levels[this.model.state.level], this.model.state.answers);
+        this.game = new GameWideView(this.model.data[this.model.state.level], this.model.state.answers);
         break;
       case `triple`:
-        this.game = new GameTripleView(levels[this.model.state.level], this.model.state.answers);
+        this.game = new GameTripleView(this.model.data[this.model.state.level], this.model.state.answers);
         break;
     }
 

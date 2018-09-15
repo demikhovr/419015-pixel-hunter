@@ -21,13 +21,13 @@ export default class GameWideView extends AbstractView {
         <p class="game__task">${this.level.task}</p>
         <form class="game__content  game__content--wide">
           ${`<div class="game__option">
-              <img src="${this.level.option.src}" alt="Option 1" width="${resize(FRAME, this.level.option).width}" height="${resize(FRAME, this.level.option).height}">
+              <img src="${this.level.options[0].src}" alt="Option 1" width="${resize(FRAME, this.level.options[0]).width}" height="${resize(FRAME, this.level.options[0]).height}">
               <label class="game__answer  game__answer--photo">
-                <input class="visually-hidden" name="question1" type="radio" value="photo" data-is-correct="${this.level.option.answers[0]}">
+                <input class="visually-hidden" name="question1" type="radio" value="photo">
                 <span>Фото</span>
               </label>
               <label class="game__answer  game__answer--paint">
-                <input class="visually-hidden" name="question1" type="radio" value="paint" data-is-correct="${this.level.option.answers[1]}">
+                <input class="visually-hidden" name="question1" type="radio" value="paint">
                 <span>Рисунок</span>
               </label>
             </div>`}
@@ -40,10 +40,10 @@ export default class GameWideView extends AbstractView {
     const form = element.querySelector(`.game__content`);
 
     const formChangeHandler = ({target}) => {
-      const isAnswered = target.checked;
+      const checkedAnswer = target.checked;
 
-      if (isAnswered) {
-        const isCorrect = target.checked && target.dataset.isCorrect === `true`;
+      if (checkedAnswer) {
+        const isCorrect = checkedAnswer && target.value === this.level.options[0].type;
         const answer = {isCorrect, TIME};
         this.onAnswer(answer);
       }
