@@ -13,14 +13,15 @@ let levelData = null;
 export default class Application {
   static showIntro() {
     const intro = new IntroScreen();
-    intro.onPlayGameBtnClick = () => Application.showGreeting();
+    intro.onFadeOut = () => Application.showGreeting();
+    intro.onPlayGameBtnClick = () => intro.hide();
+
     renderScreen(intro.element);
     Loader.loadData()
       .then((data) => {
         levelData = data;
-        return data;
       })
-      .then(() => Application.showGreeting())
+      .then(() => intro.hide())
       .catch(Application.showModalError);
   }
 
