@@ -910,7 +910,7 @@
     }
 
     bind(element) {
-      const closeBtn = element.querySelectorAll(`.modal__close`);
+      const closeBtn = element.querySelector(`.modal__close`);
       const btnSubmit = element.querySelector(`.modal__btn--submit`);
       const btnCancel = element.querySelector(`.modal__btn--cancel`);
       closeBtn.addEventListener(`click`, () => this.remove());
