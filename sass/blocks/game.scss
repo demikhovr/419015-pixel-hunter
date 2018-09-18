@@ -19,8 +19,9 @@
 
   &--blink {
     animation-name: blink;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-timing-function: ease;
+    animation-iteration-count: infinite;
   }
 }
 

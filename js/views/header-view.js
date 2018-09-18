@@ -24,14 +24,29 @@ export default class HeaderView extends AbstractView {
         </button>
         ${this.state ? `<div class="game__timer">${this.state.time}</div>
                         <div class="game__lives">
-                          ${new Array(INITIAL_STATE.lives - this.state.lives).fill(EMPTY_HEART_ICON).join(``)}
-                          ${new Array(this.state.lives).fill(FULL_HEART_ICON).join(``)}
+                          ${this._getLives(this.state.lives)}
                         </div>` : ``}
       </header>`;
   }
 
   toggleBlinkMode(isBlink) {
     this._timer.classList[isBlink ? `add` : `remove`](`game__timer--blink`);
+  }
+
+  updateTimer(time) {
+    this._timer = this._element.querySelector(`.game__timer`);
+    this._timer.textContent = time;
+  }
+
+  updateLives(lives) {
+    this._lives = this._element.querySelector(`.game__lives`);
+    this._lives.innerHTML = this._getLives(lives);
+  }
+
+  _getLives(lives) {
+    return `
+      ${new Array(INITIAL_STATE.lives - lives).fill(EMPTY_HEART_ICON).join(``)}
+      ${new Array(lives).fill(FULL_HEART_ICON).join(``)}`;
   }
 
   bind(element) {
