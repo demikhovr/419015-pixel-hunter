@@ -1,4 +1,5 @@
 export const mainScreen = document.querySelector(`#main`);
+export const root = document.body;
 
 const clearScreen = () => {
   mainScreen.innerHTML = ``;
