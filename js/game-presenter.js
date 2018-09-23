@@ -54,11 +54,8 @@ export default class GamePresenter {
     }
   }
 
-  updateHeader() {
-    const header = new HeaderView(this.model.state);
-    header.onBackBtnClick = () => this.onBackBtnClick();
-    this.root.replaceChild(header.element, this._header.element);
-    this._header = header;
+  updateTimer() {
+    this._header.updateTimer(this.model.state.time);
     if (this.model.state.time <= BLINK_TIME) {
       this._header.toggleBlinkMode(true);
     }
@@ -69,6 +66,8 @@ export default class GamePresenter {
     if (level) {
       this.root.replaceChild(level.element, this.content.element);
       this.content = level;
+      this._header.updateLives(this.model.state.lives);
+      this.updateTimer();
       this.startTimer();
     }
   }
@@ -77,9 +76,9 @@ export default class GamePresenter {
     this._interval = setInterval(() => {
       this.model.tick();
       if (!this.model.state.time) {
-        this._onAnswer({isCorrect: false});
+        this._onAnswer(false);
       } else {
-        this.updateHeader();
+        this.updateTimer();
       }
     }, ONE_SECOND);
   }
@@ -93,7 +92,6 @@ export default class GamePresenter {
   _onAnswer(answer) {
     this.model.onAnswer(answer);
     this.stopTimer();
-    this.updateHeader();
     this.updateGame();
   }
 
