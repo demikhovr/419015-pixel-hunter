@@ -29,11 +29,19 @@
     "gulp-sass": "4.0.1",
     "gulp-sourcemaps": "2.6.4",
     "gulp-svgstore": "6.1.1",
-    "rollup-plugin-commonjs": "9.1.5",
+    "rollup-plugin-commonjs": "^9.1.5",
     "stylelint": "9.4.x",
     "stylelint-config-htmlacademy": "0.1.x"
   },
   "engines": {
     "node": "8"
+  },
+  "dependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "gulp-uglify": "^3.0.1",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-node-resolve": "^3.4.0"
   }
 }
