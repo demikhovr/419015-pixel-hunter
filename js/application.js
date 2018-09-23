@@ -12,19 +12,17 @@ import Loader from './data/loader';
 let levelData = null;
 
 export default class Application {
-  static showIntro() {
+  static async showIntro() {
     const intro = new IntroScreen();
     intro.onFadeOut = () => Application.showGreeting();
     intro.onPlayGameBtnClick = () => intro.hide();
-
     renderScreen(intro.element);
-    Loader.loadData()
-      .then((data) => {
-        levelData = data;
-      })
-      .then(() => intro.hide())
-      .catch(Application.showModalError);
-
+    try {
+      levelData = await Loader.loadData();
+      intro.hide();
+    } catch (e) {
+      Application.showModalError(e);
+    }
   }
 
   static showGreeting() {
@@ -44,22 +42,26 @@ export default class Application {
     const model = new GameModel(data, playerName);
     const game = new GamePresenter(model);
     game.onBackBtnClick = () => Application.showGreeting();
-    game.onEndGame = (state, player) => {
-      Loader.saveResults(state.answers, state.lives, player)
-        .then(() => Application.showStats(player))
-        .catch(Application.showModalError);
+    game.onEndGame = async (state, player) => {
+      try {
+        await Loader.saveResults(state.answers, state.lives, player);
+        Application.showStats(player);
+      } catch (e) {
+        Application.showModalError(e);
+      }
     };
     renderScreen(game.element);
   }
 
-  static showStats(playerName) {
-    Loader.loadResults(playerName)
-      .then((data) => {
-        const stats = new StatsScreen(data);
-        stats.onBackBtnClick = () => Application.showGreeting();
-        renderScreen(stats.element);
-      })
-      .catch(Application.showModalError);
+  static async showStats(playerName) {
+    try {
+      const statsData = await Loader.loadResults(playerName);
+      const stats = new StatsScreen(statsData);
+      stats.onBackBtnClick = () => Application.showGreeting();
+      renderScreen(stats.element);
+    } catch (e) {
+      Application.showModalError(e);
+    }
   }
 
   static showModalError(error) {
