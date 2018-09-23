@@ -1,6 +1,7 @@
 import AbstractView from '../abstract-view';
 import getGameStats from './game-stats-template';
 import resize from '../../utils/resize';
+import {isDebugMode} from "../../utils/util";
 
 const FRAME = {
   width: 304,
@@ -29,6 +30,27 @@ export default class GameTripleView extends AbstractView {
       </section>`;
   }
 
+  get element() {
+    if (this._element) {
+      return this._element;
+    }
+
+    this._element = this.render();
+    this.bind(this._element);
+
+    if (isDebugMode()) {
+      this._showRightAnswer();
+    }
+
+    return this._element;
+  }
+
+  _showRightAnswer() {
+    const answerIndex = this._getUniqueAnswerIndex(this.level.options);
+    const rightAnswer = [...this._gameOptions].find((option, index) => answerIndex === index);
+    rightAnswer.classList.add(`game__option--right`);
+  }
+
   _getUniqueAnswerIndex(answers) {
     const counts = {};
     const types = answers.map((answer) => answer.type);
@@ -42,11 +64,11 @@ export default class GameTripleView extends AbstractView {
   }
 
   bind(element) {
-    const gameOptions = element.querySelectorAll(`.game__option`);
+    this._gameOptions = element.querySelectorAll(`.game__option`);
 
     const optionClickHandler = ({target}) => {
       const option = target.closest(`.game__option`);
-      const optionIndex = Array.from(gameOptions).indexOf(option);
+      const optionIndex = Array.from(this._gameOptions).indexOf(option);
 
       if (option) {
         const answerIndex = this._getUniqueAnswerIndex(this.level.options);
@@ -55,7 +77,7 @@ export default class GameTripleView extends AbstractView {
       }
     };
 
-    gameOptions.forEach((option) => option.addEventListener(`click`, optionClickHandler));
+    this._gameOptions.forEach((option) => option.addEventListener(`click`, optionClickHandler));
   }
 
   onAnswer() {

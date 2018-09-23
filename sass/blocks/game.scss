@@ -19,8 +19,9 @@
 
   &--blink {
     animation-name: blink;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-timing-function: ease;
+    animation-iteration-count: infinite;
   }
 }
 
@@ -50,6 +51,10 @@
 
   text-align: center;
   vertical-align: middle;
+
+  &--right {
+    border-color: #3498db;
+  }
 }
 
 .game__answer {
@@ -60,6 +65,11 @@
   bottom: 30px;
 
   font-size: 0;
+
+  &--right {
+    border: 5px solid #3498db;
+    border-radius: 50%;
+  }
 
   & span {
     display: block;

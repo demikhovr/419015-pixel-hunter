@@ -1,6 +1,7 @@
 import AbstractView from '../abstract-view';
 import getGameStats from './game-stats-template';
 import resize from '../../utils/resize';
+import {isDebugMode} from '../../utils/util';
 
 const FRAME = {
   width: 468,
@@ -37,16 +38,41 @@ export default class GameCommonView extends AbstractView {
       </section>`;
   }
 
+  get element() {
+    if (this._element) {
+      return this._element;
+    }
+
+    this._element = this.render();
+    this.bind(this._element);
+
+    if (isDebugMode()) {
+      this._showRightAnswer();
+    }
+
+    return this._element;
+  }
+
+  _showRightAnswer() {
+    this.level.options.forEach((item, index) => {
+      const rightAnswer = [...this._gameOptions].find((option) => {
+        return option.name === `question${index + 1}`
+          && option.value === item.type;
+      });
+      rightAnswer.parentNode.classList.add(`game__answer--right`);
+    });
+  }
+
   bind(element) {
     const form = element.querySelector(`.game__content`);
-    const gameAnswers = form.querySelectorAll(`.game__answer input[type="radio"]`);
+    this._gameOptions = form.querySelectorAll(`.game__answer input[type="radio"]`);
 
     const formChangeHandler = () => {
-      const checkedAnswers = Array.from(gameAnswers).filter(({checked}) => checked);
-      const areAllAnswered = checkedAnswers.length === MAX_ANSWERS;
+      const checkedOptions = Array.from(this._gameOptions).filter(({checked}) => checked);
+      const areAllAnswered = checkedOptions.length === MAX_ANSWERS;
 
       if (areAllAnswered) {
-        const isCorrect = checkedAnswers
+        const isCorrect = checkedOptions
           .reduce((prev, curr, i) => {
             if (curr.value === this.level.options[i].type) {
               prev++;

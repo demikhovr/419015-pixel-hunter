@@ -16,3 +16,5 @@ export const createElement = (template) => {
 
   return wrapper.firstElementChild;
 };
+
+export const isDebugMode = () => location.hash === `#debug`;

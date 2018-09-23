@@ -1,6 +1,7 @@
 import AbstractView from '../abstract-view';
 import getGameStats from './game-stats-template';
 import resize from '../../utils/resize';
+import {isDebugMode} from "../../utils/util";
 
 const FRAME = {
   width: 705,
@@ -35,14 +36,35 @@ export default class GameWideView extends AbstractView {
       </section>`;
   }
 
+  get element() {
+    if (this._element) {
+      return this._element;
+    }
+
+    this._element = this.render();
+    this.bind(this._element);
+
+    if (isDebugMode()) {
+      this._showRightAnswer();
+    }
+
+    return this._element;
+  }
+
+  _showRightAnswer() {
+    const rightAnswer = [...this._gameOptions].find((option) => option.value === this.level.options[0].type);
+    rightAnswer.parentNode.classList.add(`game__answer--right`);
+  }
+
   bind(element) {
     const form = element.querySelector(`.game__content`);
+    this._gameOptions = form.querySelectorAll(`.game__answer input[type="radio"]`);
 
     const formChangeHandler = ({target}) => {
-      const checkedAnswer = target.checked;
+      const checkedOption = target.checked;
 
-      if (checkedAnswer) {
-        const isCorrect = checkedAnswer && target.value === this.level.options[0].type;
+      if (checkedOption) {
+        const isCorrect = checkedOption && target.value === this.level.options[0].type;
         this.onAnswer(isCorrect);
       }
     };
